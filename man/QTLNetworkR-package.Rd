@@ -17,7 +17,7 @@ Date: \tab 2009-10-07\cr
 Depends: \tab utils, lattice, grid, gWidgets, gWidgetsRGtk2\cr
 License: \tab GPL version 2 or newer\cr
 LazyLoad: \tab yes\cr
-URL: \tab \url{http://rqtlnetwork.r-forge.r-project.org/} \cr
+URL: \tab \url{http://qtlnetworkr.r-forge.r-project.org/} \cr
 }
 Users can use library(QTLNetworkR) to start the GUI. Please Refer to the documentation
 section of the project homepage for the usage of QTLNetworkR.
