@@ -12,3 +12,5 @@
   *Merge QTLs with crossed confidence interval
 2010-6-18
   *Use text to distinguish different environments
+2010-6-29
+  *Repair bugs about choosing files error under Mac OS

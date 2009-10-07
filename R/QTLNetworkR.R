@@ -23,10 +23,17 @@
         std<-gfile(text="Select Map File...",filter=list("Map files" = list(patterns = c("*.map")),"All files"=list(patterns=c("*"))))
         if(std != "")
         {
-          mystr<-strsplit(std,split="\\",fixed=T)[[1]]
-          mystr.lth<-mystr[length(mystr)]
-          mydir<-substr(std,1,stop=(nchar(std)-nchar(mystr.lth)-1))
-          setwd(mydir)
+          if(length(grep("\\",std,fixed=TRUE))>0){
+              mystr<-strsplit(std,split="\\",fixed=T)[[1]]
+              mystr.lth<-mystr[length(mystr)]
+              mydir<-substr(std,1,stop=(nchar(std)-nchar(mystr.lth)-1))
+              setwd(mydir)
+          }else if(length(grep("/",std,fixed=TRUE))>0){
+              mystr<-strsplit(std,split="/",fixed=T)[[1]]
+              mystr.lth<-mystr[length(mystr)]
+              mydir<-substr(std,1,stop=(nchar(std)-nchar(mystr.lth)-1))
+              setwd(mydir)
+          }
           x <- read.table(std,fill=T,colClasses="character")
           y <- 1:as.numeric(x[grep("_c|Chromosome",x[,1]),2])
           assign("mapfile",x, envir=.qtlnetworkr)
@@ -38,10 +45,17 @@
   lyout[2,1]<- gbutton("QNK File...", cont = lyout, handler = function(h,...) {
       std <- gfile("Select QNK File...",filter=list("QNK files" = list(patterns = c("*.qnk")),"All files"=list(patterns=c("*"))))
       if(std != "") {
-        mystr<-strsplit(std,split="\\",fixed=T)[[1]]
-        mystr.lth<-mystr[length(mystr)]
-        mydir<-substr(std,1,stop=(nchar(std)-nchar(mystr.lth)-1))
-        setwd(mydir)
+        if(length(grep("\\",std,fixed=TRUE))>0){
+            mystr<-strsplit(std,split="\\",fixed=T)[[1]]
+            mystr.lth<-mystr[length(mystr)]
+            mydir<-substr(std,1,stop=(nchar(std)-nchar(mystr.lth)-1))
+            setwd(mydir)
+        }else if(length(grep("/",std,fixed=TRUE))>0){
+            mystr<-strsplit(std,split="/",fixed=T)[[1]]
+            mystr.lth<-mystr[length(mystr)]
+            mydir<-substr(std,1,stop=(nchar(std)-nchar(mystr.lth)-1))
+            setwd(mydir)
+        }
         x <- read.table(std,fill=T,colClasses="character",
                col.names=paste("col",1:max(count.fields(std))))
         y <- length(grep("_trait",x[,1]))
@@ -1087,7 +1101,7 @@
 
       color<-c("blue","blueviolet","brown","cyan","green","magenta","yellow","tomato","slateblue2","dodgerblue","grey")
       pchIndex<-21:25
-      if(length(trait)>5) stop("Number of trait should be less than 5!")
+      if(length(trait)>5) stop("Number of trait should be less than 6!")
       traitname<-qnkfile[grep("^_trait$",qnkfile[,1])[trait],3]
       Qe_start<-grep("^_QTL_effect$",qnkfile[,1])[trait]+1
       Qe_end<-grep("^_QTL_heritability$",qnkfile[,1])[trait]-1
@@ -1660,6 +1674,7 @@
                 x<-match(item,get("traitname",envir=.qtlnetworkr))
             }))
     #trait<-as.numeric(svalue(widgets$QTLNtrait))
+    if(length(trait)>5) stop("Number of traits should be less than 6!")
     chr<-svalue(widgets$QTLNchr)
     chrWidth<-as.numeric(svalue(widgets$chrWidth))/1000
     epiLineWidth<-as.numeric(svalue(widgets$epiLineWidth))
